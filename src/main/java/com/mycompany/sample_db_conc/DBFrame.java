@@ -175,17 +175,17 @@ public class DBFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // Delete
     private void Delete_JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Delete_JButtonActionPerformed
-        // TODO add your handling code here:
+        
          id = ID_jTextField.getText();
          name = Name_jTextField.getText();
          phone = Phone_jTextFiel.getText();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/testDemo","root","");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/testDemo","root","");
             System.out.println("success");
             
+            // Query
             String sql = "DELETE FROM student WHERE ID=?";
  
             PreparedStatement statement = con.prepareStatement(sql);
@@ -201,17 +201,17 @@ public class DBFrame extends javax.swing.JFrame {
         }                                              
     }//GEN-LAST:event_Delete_JButtonActionPerformed
 
+    // Insert
     private void Insert_JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Insert_JButtonActionPerformed
-        // TODO add your handling code here:
-         id = ID_jTextField.getText();
-         name = Name_jTextField.getText();
-         phone = Phone_jTextFiel.getText();
+       
+        id = ID_jTextField.getText();
+        name = Name_jTextField.getText();
+        phone = Phone_jTextFiel.getText();
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/testDemo","root","");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/testDemo","root","");
             System.out.println("success");
             
+            // Query
             String sql = "INSERT INTO student (ID, Name, Phn_no) VALUES (?, ?, ?)";
  
             PreparedStatement statement = con.prepareStatement(sql);
@@ -222,25 +222,25 @@ public class DBFrame extends javax.swing.JFrame {
             int rowsInserted = statement.executeUpdate();
             if (rowsInserted > 0) {
                 System.out.println("A new user was inserted successfully!");
-}
+            }
         }
         catch(Exception e){
            System.out.println(e);
         }
     }//GEN-LAST:event_Insert_JButtonActionPerformed
 
+    // Update
     private void Update_JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Update_JButtonActionPerformed
-        // TODO add your handling code here:
-         id = ID_jTextField.getText();
-         name = Name_jTextField.getText();
-         phone = Phone_jTextFiel.getText();
-         //int intID = Integer.parseInt(ID);
+        
+        id = ID_jTextField.getText();
+        name = Name_jTextField.getText();
+        phone = Phone_jTextFiel.getText();
+        
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con=DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/testDemo","root","");
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/testDemo","root","");
             System.out.println("success");
             
+            // Query
             String sql = "UPDATE student SET Name=?, Phn_no=? WHERE ID=?";
             
             PreparedStatement statement = con.prepareStatement(sql);
@@ -248,7 +248,6 @@ public class DBFrame extends javax.swing.JFrame {
             statement.setString(1, name);
             statement.setString(2, phone);
             statement.setString(3, id);
-            
             
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
@@ -285,17 +284,11 @@ public class DBFrame extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        
-//        try{
-//            Class.forName("com.mysql.cj.jdbc.Driver");
-//            Connection con=DriverManager.getConnection(
-//                    "jdbc:mysql://localhost:3306/testDemo","root","");
-//            System.out.println("success");
-//        }
-//        catch(Exception e){
-//           System.out.println(e);
-//        }
+                
         try {
+            // Database intialization
+            Class.forName("com.mysql.cj.jdbc.Driver");
+           
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -310,6 +303,8 @@ public class DBFrame extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(DBFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(DBFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch(Exception e){
+           System.out.println(e);
         }
         //</editor-fold>
 
