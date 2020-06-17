@@ -5,8 +5,10 @@ import java.sql.*;
 
 public class Database 
 {
-    public static void main(String args[]){
+   
 
+    public static void main(String args[]){
+        
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con=DriverManager.getConnection(
@@ -29,5 +31,6 @@ public class Database
            System.out.println(e);
         }
     }
+    
         
 }
