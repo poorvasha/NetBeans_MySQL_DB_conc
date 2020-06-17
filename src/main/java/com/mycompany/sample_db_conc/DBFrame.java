@@ -1,37 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ 
 package com.mycompany.sample_db_conc;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-//import java.util.ArrayList;
+import java.sql.ResultSet;
+import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author poorvasha
- */
 public class DBFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form DBFrame
-     */
     Connection con;
     String id = null; 
     String name = null; 
     String phone = null;
     
     public DBFrame() {
-        initComponents(); 
-
+        initComponents();
+        view();
     }
-//    public ArrayList<user> userList(){
-//        ArrayList<user> usersList = new ArrayList<>();
-//    }
-
+    public void view(){
+        try{
+            con=DriverManager.getConnection("jdbc:mysql://localhost:3306/testDemo","root","");
+            PreparedStatement pre=con.prepareStatement("select * from student");
+            ResultSet res=pre.executeQuery();
+            DefaultTableModel tm = (DefaultTableModel)StudentTable_jTable.getModel();
+            tm.setRowCount(0);
+            
+            while(res.next())
+            {
+                Object o[]={res.getInt("ID"), res.getString("Name"), res.getDouble("Phn_no")};
+                tm.addRow(o);
+            }
+        }
+        catch(Exception e){
+             System.out.println(e);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -47,7 +52,6 @@ public class DBFrame extends javax.swing.JFrame {
         Update_JButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         StudentTable_jTable = new javax.swing.JTable();
-        Read_JButton = new javax.swing.JButton();
         Phone_jTextFiel = new javax.swing.JTextField();
         ID_jTextField = new javax.swing.JTextField();
         Name_jTextField = new javax.swing.JTextField();
@@ -87,18 +91,19 @@ public class DBFrame extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Name", "Title 3"
+                "uid", "uname", "uphn"
             }
-        ));
-        StudentTable_jTable.setRowHeight(50);
-        jScrollPane1.setViewportView(StudentTable_jTable);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class
+            };
 
-        Read_JButton.setText("Read   ");
-        Read_JButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Read_JButtonActionPerformed(evt);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
             }
         });
+        StudentTable_jTable.setRowHeight(18);
+        jScrollPane1.setViewportView(StudentTable_jTable);
 
         Phone_jTextFiel.setText("Enter Phn No");
         Phone_jTextFiel.addActionListener(new java.awt.event.ActionListener() {
@@ -136,7 +141,6 @@ public class DBFrame extends javax.swing.JFrame {
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Insert_JButton)
-                    .addComponent(Read_JButton)
                     .addComponent(Update_JButton)
                     .addComponent(Delete_JButton))
                 .addGap(69, 69, 69))
@@ -162,13 +166,11 @@ public class DBFrame extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(Insert_JButton)
-                        .addGap(35, 35, 35)
+                        .addGap(49, 49, 49)
                         .addComponent(Update_JButton)
-                        .addGap(34, 34, 34)
-                        .addComponent(Read_JButton)
-                        .addGap(33, 33, 33)
+                        .addGap(50, 50, 50)
                         .addComponent(Delete_JButton)
-                        .addGap(8, 8, 8)))
+                        .addGap(25, 25, 25)))
                 .addGap(0, 121, Short.MAX_VALUE))
         );
 
@@ -178,9 +180,10 @@ public class DBFrame extends javax.swing.JFrame {
     // Delete
     private void Delete_JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Delete_JButtonActionPerformed
         
-         id = ID_jTextField.getText();
-         name = Name_jTextField.getText();
-         phone = Phone_jTextFiel.getText();
+        id = ID_jTextField.getText();
+        name = Name_jTextField.getText();
+        phone = Phone_jTextFiel.getText();
+        
         try{
             con=DriverManager.getConnection("jdbc:mysql://localhost:3306/testDemo","root","");
             System.out.println("success");
@@ -194,8 +197,12 @@ public class DBFrame extends javax.swing.JFrame {
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
                 System.out.println("A user was deleted successfully!");
-            }        
+            }
+            
+            // call view method to show table
+            view();
         }
+        
         catch(Exception e){
            System.out.println(e);
         }                                              
@@ -207,6 +214,7 @@ public class DBFrame extends javax.swing.JFrame {
         id = ID_jTextField.getText();
         name = Name_jTextField.getText();
         phone = Phone_jTextFiel.getText();
+        
         try{
             con=DriverManager.getConnection("jdbc:mysql://localhost:3306/testDemo","root","");
             System.out.println("success");
@@ -223,6 +231,9 @@ public class DBFrame extends javax.swing.JFrame {
             if (rowsInserted > 0) {
                 System.out.println("A new user was inserted successfully!");
             }
+            
+            // call view method to show table
+            view();
         }
         catch(Exception e){
            System.out.println(e);
@@ -252,16 +263,15 @@ public class DBFrame extends javax.swing.JFrame {
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("An existing user was updated successfully!");
-            }        
+            } 
+            
+            // call view method to show table
+            view();
         }
         catch(Exception e){
            System.out.println(e);
         }
     }//GEN-LAST:event_Update_JButtonActionPerformed
-
-    private void Read_JButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Read_JButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_Read_JButtonActionPerformed
 
     private void ID_jTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ID_jTextFieldActionPerformed
         // TODO add your handling code here:
@@ -314,6 +324,7 @@ public class DBFrame extends javax.swing.JFrame {
                 new DBFrame().setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -323,7 +334,6 @@ public class DBFrame extends javax.swing.JFrame {
     private javax.swing.JButton Insert_JButton;
     private javax.swing.JTextField Name_jTextField;
     private javax.swing.JTextField Phone_jTextFiel;
-    private javax.swing.JButton Read_JButton;
     private javax.swing.JTable StudentTable_jTable;
     private javax.swing.JButton Update_JButton;
     private javax.swing.JScrollPane jScrollPane1;

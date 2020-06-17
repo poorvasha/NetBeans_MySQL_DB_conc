@@ -9,25 +9,25 @@ package com.mycompany.sample_db_conc;
  *
  * @author poorvasha
  */
-//class user {
-//    private int id, phn;
-//    private String name;
+class User {
+//    private int uid, uphn;
+//    private String uname;
 //    
-//    public User(int id, int phn, String name){
+//    public User(int uid, int uphn, String uname){
 //        
-//        this.id=id;
-//        this.name=name;
-//        this.phn=phn;
+//        this.uid=uid;
+//        this.uname=uname;
+//        this.uphn=uphn;
 //    }
 //    
 //    public int getid(){
-//        return id;
+//        return uid;
 //    }
 //    public int getphn(){
-//        return phn;
+//        return uphn;
 //    }
 //    public String getname(){
-//        return name;
+//        return uname;
 //    }
-//    return 
-//}
+     
+}
